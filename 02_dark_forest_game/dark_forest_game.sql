@@ -2,15 +2,13 @@
  * Цель проекта: изучить влияние характеристик игроков и их игровых персонажей 
  * на покупку внутриигровой валюты «райские лепестки», а также оценить 
  * активность игроков при совершении внутриигровых покупок
- * 
- * Автор: Столяров Артемий dreamoftioma@yandex.ru
- * Дата: 23.09.2026
+ * Автор: Столяров Артемий tema.stolyarov@bk.ru
 */
 
 -- Часть 1. Исследовательский анализ данных
--- Задача 1. Исследование доли платящих игроков
+-- Исследование доли платящих игроков
 
--- title: 1.1. Доля платящих пользователей по всем данным:
+-- Доля платящих пользователей по всем данным:
 
 SELECT 
     COUNT(*) AS total_users,
@@ -18,7 +16,7 @@ SELECT
     ROUND(AVG(payer)::numeric, 4) AS payment_part_of_users
 FROM fantasy.users;
 
--- title: 1.2. Доля платящих пользователей в разрезе расы персонажа:
+-- Доля платящих пользователей в разрезе расы персонажа:
 
 SELECT 
     r.race,
@@ -29,8 +27,8 @@ FROM fantasy.users u
 LEFT JOIN fantasy.race r USING(race_id)
 GROUP BY r.race_id, r.race
 ORDER BY payment_users_by_race DESC;
--- Задача 2. Исследование внутриигровых покупок
--- title: 2.1. Статистические показатели по полю amount:
+-- Исследование внутриигровых покупок
+-- Статистические показатели по полю amount:
 
 SELECT 
     COUNT(transaction_id) AS total_transactions,
@@ -42,7 +40,7 @@ SELECT
     ROUND(STDDEV(amount)::numeric, 2) AS stddev_amount
 FROM fantasy.events;
 
--- title: 2.1.1. Статистика без нулевых покупок:
+-- Статистика без нулевых покупок:
 
 SELECT 
     COUNT(transaction_id) AS total_transactions,
@@ -52,7 +50,7 @@ SELECT
 FROM fantasy.events
 WHERE amount > 0;
 
--- title: 2.2: Аномальные нулевые покупки:
+-- Аномальные нулевые покупки:
 
 SELECT 
     COUNT(transaction_id) AS total_transactions,
@@ -64,7 +62,7 @@ SELECT
     ) AS part_zero_transactions
 FROM fantasy.events;
 
--- title: 2.3. Популярные эпические предметы (включая непокупавшиеся):
+-- Популярные эпические предметы (включая непокупавшиеся):
 
 WITH item_stats AS (
     SELECT 
@@ -95,7 +93,7 @@ ORDER BY total_sales DESC;
 
 
 -- Часть 2. Решение ad hoc-задачи
--- title: Задача: Зависимость активности игроков от расы персонажа:
+-- Зависимость активности игроков от расы персонажа:
 
 WITH total_users AS (
     SELECT 
